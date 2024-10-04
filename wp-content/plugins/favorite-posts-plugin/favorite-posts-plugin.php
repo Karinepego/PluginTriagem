@@ -6,14 +6,12 @@ Version: 1.0
 Author: Karine Pêgo
 */
 
-// Função que será chamada quando o plugin for ativado
-register_activation_hook(__FILE__, 'create_favorite_table');
+register_activation_hook(__FILE__, 'create_favorite_table'); // executada quando o plugin é ativado. 
 
-// Função para criar a tabela no banco de dados
 function create_favorite_table() {
-    global $wpdb;
+    global $wpdb; // me permitir interagir com o banco
 
-    $table_name = $wpdb->prefix . 'favorite_posts';
+    $table_name = $wpdb->prefix . 'favorite_posts'; //prefixo wb_ la no myphpadmin
     $charset_collate = $wpdb->get_charset_collate();
 
     $sql = "CREATE TABLE $table_name (
@@ -28,12 +26,12 @@ function create_favorite_table() {
     dbDelta($sql);
 }
 
-// Registra os endpoints da REST API
+// Registra uma nova rota (endpoint) da REST API 
 add_action('rest_api_init', function () {
     register_rest_route('favorite-posts/v1', '/toggle/(?P<id>\d+)', array(
         'methods' => 'POST',
         'callback' => 'toggle_favorite_post',
-        'permission_callback' => function () {
+        'permission_callback' => function () { //so permite usuario logado faça favoritação 
             return is_user_logged_in();
         },
     ));
