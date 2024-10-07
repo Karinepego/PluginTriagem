@@ -31,7 +31,7 @@ add_action('rest_api_init', function () {
     register_rest_route('favorite-posts/v1', '/toggle/(?P<id>\d+)', array(
         'methods' => 'POST',
         'callback' => 'toggle_favorite_post',
-        'permission_callback' => function () { //so permite usuario logado faça favoritação 
+        'permission_callback' => function () { //so permite usuário logado faça favoritação 
             return is_user_logged_in();
         },
     ));
